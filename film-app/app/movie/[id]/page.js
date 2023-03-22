@@ -1,9 +1,27 @@
-import React from 'react'
+import MovieContainer from "@/containers/movie";
+import React from "react";
+import { notFound } from "next/navigation";
 
-function MoviePage() {
-  return (
-    <div>MoviePage</div>
-  )
+import Movies from "@/mocks/movies.json";
+
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export default MoviePage
+async function MoviePage({ params, searchParams }) {
+  await delay(2000);
+  const movieDetails = Movies.results.find(
+    (movie) => movie.id.toString() === params.id
+  );
+
+  if (!movieDetails) {
+    notFound();
+  }
+  /*if (searchParams.error === "true") {
+    throw new Error("Error Happened!");
+  }*/
+
+  return <MovieContainer movie={movieDetails} />;
+}
+
+export default MoviePage;
